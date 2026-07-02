@@ -47,7 +47,7 @@ class _EvolutionPageState extends State<EvolutionPage> {
             FilterChip(
               label: const Text('Dor'),
               selected: showPain,
-              selectedColor: const Color(0xFFAE263D).withOpacity(0.3),
+              selectedColor: const Color(0xFFAE263D).withValues(alpha: 0.3),
               checkmarkColor: const Color(0xFFAE263D),
               onSelected: (val) => setState(() => showPain = val),
             ),
@@ -136,7 +136,7 @@ class _EvolutionPageState extends State<EvolutionPage> {
             dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(
               show: true,
-              color: const Color(0xFFAE263D).withOpacity(0.15),
+              color: const Color(0xFFAE263D).withValues(alpha: 0.15),
             ),
           ),
         if (showFatigue)
