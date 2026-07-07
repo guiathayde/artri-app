@@ -116,6 +116,14 @@ class PhysicalExercisesViewModel extends ChangeNotifier {
     context.go(getExerciseRoute(context));
   }
 
+  void startQueue(List<Exercise> exercises, BuildContext context) {
+    _queuedExercises = _queueExercises(exercises);
+
+    notifyListeners();
+
+    context.go(getExerciseRoute(context));
+  }
+
   void handleCompleteExercise(BuildContext context) {
     if (_currentExerciseIndex == null) {
       log('Error: No current exercise');
