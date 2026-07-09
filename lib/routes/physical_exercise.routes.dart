@@ -11,6 +11,7 @@ class PhysicalExerciseRoutes implements RoutesSession {
   static String handExercises = '$_base/hand';
   static String feetExercises = '$_base/feet';
   static String customExercises = '$_base/custom';
+  static String savedPlans = '$_base/custom/saved';
   static String congratulations = '$_base/congratulations';
 
   static List<RouteBase> getGoRoutes() => [
@@ -84,7 +85,7 @@ class PhysicalExerciseRoutes implements RoutesSession {
         ShellRoute(
           parentNavigatorKey: RouterKeys.appRoutesKey,
           builder: (context, state, child) => PhysicalExerciseView(
-            title: 'Personalizado',
+            title: 'Exercícios Personalizados',
             child: child,
             subtitle: DifficultyHelper.getDifficultyText(
               state.pathParameters['difficulty'],
@@ -93,12 +94,47 @@ class PhysicalExerciseRoutes implements RoutesSession {
           routes: [
             GoRoute(
               path: 'custom',
-              builder: (context, state) => const LevelExerciseSelector(),
+              builder: (context, state) => const CustomLevelSelector(),
               routes: [
                 GoRoute(
+                  path: 'saved',
+                  builder: (context, state) => const SavedPlansView(),
+                  routes: [
+                    GoRoute(
+                      path: 'edit/:planId',
+                      builder: (context, state) => CustomExerciseEditLoader(
+                        planId: int.parse(state.pathParameters['planId']!),
+                      ),
+                    ),
+                    GoRoute(
+                      path: ':exerciseId',
+                      builder: (context, state) => ExerciseRoutineStepView(
+                        key: ValueKey(state.pathParameters['exerciseId']),
+                      ),
+                    ),
+                  ],
+                ),
+                GoRoute(
                   path: ':difficulty',
-                  builder: (context, state) =>
-                      const PhysicalExerciseRoutineOverview(),
+                  builder: (context, state) => CustomExerciseOverview(
+                    difficulty: ExerciseDifficulty.fromString(
+                      state.pathParameters['difficulty']!,
+                    ),
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'build',
+                      builder: (context, state) => const CustomExerciseBuilder(),
+                      routes: [
+                        GoRoute(
+                          path: ':exerciseId',
+                          builder: (context, state) => ExerciseRoutineStepView(
+                            key: ValueKey(state.pathParameters['exerciseId']),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
