@@ -1,3 +1,4 @@
+import 'package:artriapp/database/index.dart';
 import 'package:artriapp/routes/index.dart';
 import 'package:artriapp/services/index.dart';
 import 'package:artriapp/utils/index.dart';
@@ -8,7 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
-  App({super.key});
+  final AppDatabase database;
+
+  App({super.key, required this.database});
   final _router = GoRouter(
     initialLocation: SecurityTokenService().userLoggedIn()
         ? BottomNavRoutes.diary
@@ -22,7 +25,7 @@ class App extends StatelessWidget {
     ThemeData(textTheme: GoogleFonts.jetBrainsMonoTextTheme());
 
     return MultiProvider(
-      providers: GlobalProviders.getProviders(),
+      providers: GlobalProviders.getProviders(database),
       child: MaterialApp.router(
         routerConfig: _router,
         title: 'ArtriApp',
